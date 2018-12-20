@@ -43,7 +43,7 @@ void getMaxRight(int n)
 		if (r[i].height < r[n].height) break;
 		r[n].length++;
 	}
-	maxright[n] = max(tempmax, r[n].height*r[n].length);
+	maxright[n] = max(maxright[n - 1], tempmax, r[n].height*r[n].length);
 }
 
 void getMaxLeft(int n)
@@ -65,7 +65,7 @@ void getMaxLeft(int n)
 		if (r[i].height < r[n].height) break;
 		r[n].length++;
 	}
-	maxleft[n] = max(tempmax, r[n].height*r[n].length);
+	maxleft[n] = max(maxleft[n - 1], tempmax, r[n].height*r[n].length);
 }
 
 int main()
@@ -79,13 +79,11 @@ int main()
 		r[i].blocked = 0; r[i].length = 1;
 		getMaxLeft(i);
 	}
-	/*for (int i = 0; i < N; i++)
-	{
-		printf("%d %d\n", maxleft[i], maxright[i]);
-	}*/
 	int ans = 0, temp;
 	for (int i = 0; i < N - K - 1; i++)
 	{
-		temp = maxright[i] + maxleft[i];
+		temp = maxright[i] + maxleft[i + K + 1];
+		if (temp > ans) ans = temp;
 	}
+	printf("%d", ans);
 }
